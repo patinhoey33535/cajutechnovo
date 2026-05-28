@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>CajuTec – Cultivo & Negócios do Caju</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<!-- ═══════════════ SIDEBAR ═══════════════ -->
+<aside id="sidebar">
+  <div class="sb-logo">
+    <img src="images/logo.jpg" alt="CajuTec Logo" style="width:44px;height:44px;border-radius:12px;object-fit:cover;border:2px solid rgba(255,255,255,.2)"/>
+    <div><h1>CajuTec</h1><small>Gestão Fazenda</small></div>
+  </div>
+  <nav id="nav">
+    <a class="active" onclick="go('dashboard')">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      Dashboard
+    </a>
+    <a onclick="go('variedades')">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2z"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/><line x1="2" y1="12" x2="22" y2="12"/></svg>
+      Variedades
+    </a>
+    <a onclick="go('plantacoes')">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="3 11 12 2 21 11"/><polyline points="3 11 3 22 21 22 21 11"/></svg>
+      Plantações
+    </a>
+    <a onclick="go('diagnostico')">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 12h6m-3-3v6m-7 3a9 9 0 1 1 18 0H2z"/></svg>
+      Diagnóstico
+    </a>
+    <a onclick="go('marketplace')">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+      Marketplace
+    </a>
+    <a onclick="go('financeiro')">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+      Financeiro
+    </a>
+    <a onclick="go('rastreabilidade')">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 7h.01M7 12h.01M7 17h.01M12 7h5M12 12h5M12 17h5"/></svg>
+      Rastreabilidade
+    </a>
+    <a onclick="go('estoque')">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+      Estoque
+    </a>
+    <a onclick="go('alertas')">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+      Alertas
+    </a>
+    <a onclick="go('mensagens')" style="position:relative">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      Mensagens
+      <span id="msg-badge" style="display:none;position:absolute;right:12px;top:8px;background:#dc2626;color:#fff;border-radius:999px;font-size:10px;font-weight:700;padding:1px 6px;min-width:18px;text-align:center"></span>
+    </a>
+    <a onclick="go('academia')">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+      Academia
+    </a>
+    <a onclick="go('informacao')">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      Informação
+    </a>
+  </nav>
+  <div class="sb-footer">
+    <div class="sb-badge">
+      <strong>🌿 Safra 2025</strong>
+      <span style="font-size:12px;opacity:.7">Acompanhe seus resultados e alertas diários.</span>
+    </div>
+  </div>
+</aside>
+
+<!-- ═══════════════ MAIN ═══════════════ -->
+<div id="main">
+  <header>
+    <button id="bell-btn" onclick="go('alertas')">
+      <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+      <span class="dot"></span>
+    </button>
+    <div class="avatar">FA</div>
+  </header>
+
+  <div id="content">
+
+  <!-- ═══ DASHBOARD ═══ -->
+  <section id="page-dashboard" class="page active">
+    <div class="page-hd"><div><h2>Visão Geral</h2><p>Bem-vindo de volta! Resumo da sua fazenda no Nordeste do Brasil.</p></div></div>
+
+    <div class="hero-weather">
+      <div class="hw-top">
+        <span class="hw-badge">🌿 Dica do Dia</span>
+        <span style="font-size:13px;opacity:.8">Piripiri, PI</span>
+      </div>
+      <p style="font-size:18px;font-weight:700;max-width:480px;margin-bottom:18px">Realize a poda de formação nas plantas jovens para garantir maior produtividade e facilitar a colheita mecânica.</p>
+      <div class="hw-stats">
+        <div style="display:flex;align-items:center;gap:16px">
+          <div><div class="hw-temp" id="wx-temp">--°C</div><div class="hw-cond" id="wx-cond">⏳ Carregando...</div></div>
+        </div>
+        <div class="hw-stat" id="wx-hum">💧 -- Umidade</div>
+        <div class="hw-stat" id="wx-wind">💨 -- km/h</div>
+        <div class="hw-stat" id="wx-rain">🌧️ -- mm chuva hoje</div>
+      </div>
+    </div>
+
+    <div class="grid-4">
+      <div class="card stat-card">
+        <div class="sc-top"><span class="sc-label">Preço Castanha</span><div class="sc-icon" style="background:#dcfce7">🌰</div></div>
+        <div class="sc-value">R$ 8,50/kg</div>
+        <div class="sc-sub">↑ +3.5% esta semana</div>
+      </div>
+      <div class="card stat-card">
+        <div class="sc-top"><span class="sc-label">Plantações Ativas</span><div class="sc-icon" style="background:#fef3c7">🌱</div></div>
+        <div class="sc-value">4</div>
+        <div class="sc-sub">Total: 27,5 ha</div>
+      </div>
+      <div class="card stat-card">
+        <div class="sc-top"><span class="sc-label">Produção Estimada</span><div class="sc-icon" style="background:#dbeafe">📦</div></div>
+        <div class="sc-value">39,1 t</div>
+        <div class="sc-sub">Safra 2025</div>
+      </div>
+      <div class="card stat-card">
+        <div class="sc-top"><span class="sc-label">Alertas Ativos</span><div class="sc-icon" style="background:#fee2e2">🔔</div></div>
+        <div class="sc-value">3</div>
+        <div class="sc-sub">1 urgente</div>
+      </div>
+    </div>
+
+    <div class="grid-3">
+      <div class="card"><h4 style="font-weight:700;margin-bottom:14px">📊 Cotação do Caju</h4>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div style="display:flex;justify-content:space-between;font-size:14px"><span>Castanha In Natura</span><strong>R$ 8,50/kg ↑</strong></div>
+          <div style="display:flex;justify-content:space-between;font-size:14px"><span>Pedúnculo</span><strong>R$ 4,20/kg →</strong></div>
+          <div style="display:flex;justify-content:space-between;font-size:14px"><span>Amêndoa Processada</span><strong>R$ 42,00/kg ↑</strong></div>
+        </div>
+      </div>
+      <div class="card"><h4 style="font-weight:700;margin-bottom:14px">🚨 Alertas Recentes</h4>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div style="font-size:13px;padding:8px;background:#fee2e2;border-radius:8px;color:#991b1b">🔴 Risco de antracnose — Fazenda 1</div>
+          <div style="font-size:13px;padding:8px;background:#fef3c7;border-radius:8px;color:#92400e">🟡 Baixa umidade — Irrigar talhão 2</div>
+          <div style="font-size:13px;padding:8px;background:#dbeafe;border-radius:8px;color:#1e3a5f">🔵 Colheita prevista para próxima semana</div>
+        </div>
+      </div>
+      <div class="card"><h4 style="font-weight:700;margin-bottom:14px">📅 Próximos Eventos</h4>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div style="font-size:13px;padding:8px 0;border-bottom:1px solid var(--border)">🌸 Floração — Fazenda 1 (15/Jul)</div>
+          <div style="font-size:13px;padding:8px 0;border-bottom:1px solid var(--border)">✂️ Poda — Fazenda 3 (20/Jul)</div>
+          <div style="font-size:13px;padding:8px 0">🌾 Colheita estimada — Ago/2025</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ VARIEDADES ═══ -->
+  <section id="page-variedades" class="page">
+    <div class="page-hd"><div><h2>Variedades do Cajueiro</h2><p>Conheça as principais cultivares recomendadas pela Embrapa para o Nordeste.</p></div></div>
+    <div class="grid-3">
+      <div class="card" style="border-top:4px solid var(--primary)">
+        <div style="font-size:32px;margin-bottom:12px">🌿</div>
+        <h3 style="font-weight:800;font-size:18px;margin-bottom:6px">CCP 76</h3>
+        <span class="badge badge-green">Anão Precoce</span>
+        <p style="font-size:13px;color:var(--muted);margin-top:10px;line-height:1.5">Variedade mais cultivada no Nordeste. Alta produtividade (1,5 t/ha), precocidade de produção e boa resistência à seca.</p>
+        <div style="margin-top:14px;font-size:13px;display:flex;flex-direction:column;gap:4px">
+          <span>📏 Espaçamento: 7×7m</span><span>⏱️ Início produção: 18 meses</span><span>⚖️ Produção: 1,5 t/ha</span>
+        </div>
+      </div>
+      <div class="card" style="border-top:4px solid var(--accent)">
+        <div style="font-size:32px;margin-bottom:12px">🌱</div>
+        <h3 style="font-weight:800;font-size:18px;margin-bottom:6px">BRS 189</h3>
+        <span class="badge badge-amber">Anão Precoce</span>
+        <p style="font-size:13px;color:var(--muted);margin-top:10px;line-height:1.5">Excelente qualidade da amêndoa e do pedúnculo. Resistente a doenças foliares e adaptada a regiões semiáridas.</p>
+        <div style="margin-top:14px;font-size:13px;display:flex;flex-direction:column;gap:4px">
+          <span>📏 Espaçamento: 8×8m</span><span>⏱️ Início produção: 24 meses</span><span>⚖️ Produção: 1,8 t/ha</span>
+        </div>
+      </div>
+      <div class="card" style="border-top:4px solid var(--blue)">
+        <div style="font-size:32px;margin-bottom:12px">🍃</div>
+        <h3 style="font-weight:800;font-size:18px;margin-bottom:6px">CCP 09</h3>
+        <span class="badge badge-blue">Comum</span>
+        <p style="font-size:13px;color:var(--muted);margin-top:10px;line-height:1.5">Cultivar de porte comum com alto vigor vegetativo. Frutos com excelente sabor e boa aceitação no mercado de sucos.</p>
+        <div style="margin-top:14px;font-size:13px;display:flex;flex-direction:column;gap:4px">
+          <span>📏 Espaçamento: 10×10m</span><span>⏱️ Início produção: 36 meses</span><span>⚖️ Produção: 0,9 t/ha</span>
+        </div>
+      </div>
+      <div class="card" style="border-top:4px solid #7c3aed">
+        <div style="font-size:32px;margin-bottom:12px">🌾</div>
+        <h3 style="font-weight:800;font-size:18px;margin-bottom:6px">Caju Anão Amarelo</h3>
+        <span class="badge badge-purple">Anão Precoce</span>
+        <p style="font-size:13px;color:var(--muted);margin-top:10px;line-height:1.5">Fruto de coloração amarela, alta produtividade de pedúnculo e castanha grande. Muito usado para produção de cajuína.</p>
+        <div style="margin-top:14px;font-size:13px;display:flex;flex-direction:column;gap:4px">
+          <span>📏 Espaçamento: 7×7m</span><span>⏱️ Início produção: 18 meses</span><span>⚖️ Produção: 1,6 t/ha</span>
+        </div>
+      </div>
+      <div class="card" style="border-top:4px solid #dc2626">
+        <div style="font-size:32px;margin-bottom:12px">🍎</div>
+        <h3 style="font-weight:800;font-size:18px;margin-bottom:6px">Caju Vermelho</h3>
+        <span class="badge badge-red">Comum</span>
+        <p style="font-size:13px;color:var(--muted);margin-top:10px;line-height:1.5">Fruto vermelho com sabor mais ácido, muito apreciado para doces e geleias. Boa adaptação ao litoral nordestino.</p>
+        <div style="margin-top:14px;font-size:13px;display:flex;flex-direction:column;gap:4px">
+          <span>📏 Espaçamento: 10×10m</span><span>⏱️ Início produção: 36 meses</span><span>⚖️ Produção: 0,7 t/ha</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ PLANTAÇÕES ═══ -->
+  <section id="page-plantacoes" class="page">
+    <div class="page-hd"><div><h2>Minhas Plantações</h2><p>Gerencie seus lotes, áreas de plantio e monitore o status de cada um.</p></div>
+      <button class="btn" onclick="alert('Funcionalidade disponível na versão completa do app.')">+ Nova Plantação</button>
+    </div>
+    <div class="card">
+      <table>
+        <thead><tr><th>Nome</th><th>Variedade</th><th>Área</th><th>Status</th><th>Plantio</th><th>Estimativa</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Fazenda São João – T1</strong><br><small style="color:var(--muted)">📍 Piripiri, PI</small></td><td>Caju Anão Precoce</td><td>12,5 ha</td><td><span class="badge badge-green">Ativa</span></td><td>Mar/2022</td><td>18,8 t</td></tr>
+          <tr><td><strong>Fazenda São João – T2</strong><br><small style="color:var(--muted)">📍 Piripiri, PI</small></td><td>CCP 09</td><td>8 ha</td><td><span class="badge badge-amber">Colhendo</span></td><td>Jun/2021</td><td>12 t</td></tr>
+          <tr><td><strong>Sítio Boa Vista</strong><br><small style="color:var(--muted)">📍 Itapipoca, CE</small></td><td>BRS 189</td><td>5,5 ha</td><td><span class="badge badge-green">Ativa</span></td><td>Jan/2023</td><td>8,3 t</td></tr>
+          <tr><td><strong>Área Experimental</strong><br><small style="color:var(--muted)">📍 Fortaleza, CE</small></td><td>Caju Comum</td><td>2 ha</td><td><span class="badge badge-blue">Manutenção</span></td><td>Ago/2020</td><td>—</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ═══ DIAGNÓSTICO ═══ -->
+  <section id="page-diagnostico" class="page">
+    <div class="page-hd">
+      <div><h2>Diagnóstico IA</h2><p>Motor de IA com base no banco de dados da Embrapa — identifique doenças do cajueiro pelos sintomas observados.</p></div>
+      <div style="display:flex;align-items:center;gap:8px;background:rgba(61,107,47,.08);padding:8px 16px;border-radius:12px;border:1px solid rgba(61,107,47,.2)">
+        <div style="width:8px;height:8px;border-radius:50%;background:#16a34a;animation:pulse 2s infinite"></div>
+        <span style="font-size:13px;font-weight:700;color:var(--primary)">IA Ativa — Base Embrapa</span>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:400px 1fr;gap:20px">
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <div class="card" style="padding:16px">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+            <div style="width:32px;height:32px;border-radius:10px;background:rgba(61,107,47,.1);display:flex;align-items:center;justify-content:center;font-size:16px">🤖</div>
+            <div><strong style="font-size:14px">Assistente CajuTec</strong><br><span style="font-size:11px;color:var(--muted)">Descreva o que está vendo na planta</span></div>
+          </div>
+          <div style="display:flex;gap:8px">
+            <input id="diag-chat-input" type="text" placeholder="Ex: mancha branca nas folhas..." style="flex:1;padding:10px 14px;border-radius:10px;border:1.5px solid var(--border);font-size:13px;outline:none;font-family:inherit" onkeydown="if(event.key==='Enter')chatDiagnose()"/>
+            <button onclick="chatDiagnose()" class="btn" style="padding:10px 14px">🔍</button>
+          </div>
+          <div id="chat-suggestions" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px">
+            <span style="font-size:11px;color:var(--muted);width:100%;margin-bottom:2px">Sugestões rápidas:</span>
+            <button onclick="quickSearch('pó branco nas folhas')" class="pill" style="font-size:11px;padding:4px 10px">pó branco</button>
+            <button onclick="quickSearch('mancha marrom escura')" class="pill" style="font-size:11px;padding:4px 10px">mancha escura</button>
+            <button onclick="quickSearch('resina tronco exsudação')" class="pill" style="font-size:11px;padding:4px 10px">resina no tronco</button>
+            <button onclick="quickSearch('mancha preta folha inferior')" class="pill" style="font-size:11px;padding:4px 10px">manchas pretas</button>
+            <button onclick="quickSearch('galho seco morte descendente')" class="pill" style="font-size:11px;padding:4px 10px">galhos secos</button>
+            <button onclick="quickSearch('flor fruto manchado castanha')" class="pill" style="font-size:11px;padding:4px 10px">flores/frutos</button>
+          </div>
+        </div>
+
+        <div class="card" style="padding:16px">
+          <h4 style="font-weight:700;font-size:13px;margin-bottom:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em">🌿 Parte Afetada</h4>
+          <div style="display:flex;gap:6px;flex-wrap:wrap" id="part-pills">
+            <button class="pill active" onclick="setPart(this,'folha')">🍃 Folha</button>
+            <button class="pill" onclick="setPart(this,'fruto')">🌰 Fruto/Castanha</button>
+            <button class="pill" onclick="setPart(this,'tronco')">🪵 Tronco/Ramo</button>
+            <button class="pill" onclick="setPart(this,'flor')">🌸 Flor/Inflorescência</button>
+            <button class="pill" onclick="setPart(this,'todos')">🌿 Toda a planta</button>
+          </div>
+        </div>
+
+        <div class="card" style="padding:16px">
+          <h4 style="font-weight:700;font-size:13px;margin-bottom:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em">🔍 Sintomas Visuais</h4>
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <label class="symp-row"><input type="checkbox" class="diag-cb" value="po_branco" onchange="autoAnalyze()"><span>⚪ Pó branco ou acinzentado na superfície</span></label>
+            <label class="symp-row"><input type="checkbox" class="diag-cb" value="mancha_marrom" onchange="autoAnalyze()"><span>🟤 Manchas marrom-avermelhadas / necróticas</span></label>
+            <label class="symp-row"><input type="checkbox" class="diag-cb" value="mancha_preta_inferior" onchange="autoAnalyze()"><span>⚫ Manchas pretas/pardas na face inferior da folha</span></label>
+            <label class="symp-row"><input type="checkbox" class="diag-cb" value="mancha_escura_castanha" onchange="autoAnalyze()"><span>🔴 Manchas escuras com rachaduras no fruto/castanha</span></label>
+            <label class="symp-row"><input type="checkbox" class="diag-cb" value="resina_goma" onchange="autoAnalyze()"><span>🟡 Exsudação de goma/resina no tronco</span></label>
+            <label class="symp-row"><input type="checkbox" class="diag-cb" value="cancro_tronco" onchange="autoAnalyze()"><span>🪵 Cancro ou lesão no tronco/ramos lenhosos</span></label>
+            <label class="symp-row"><input type="checkbox" class="diag-cb" value="necrose_ramos" onchange="autoAnalyze()"><span>💀 Necrose e morte descendente dos ramos terminais</span></label>
+            <label class="symp-row"><input type="checkbox" class="diag-cb" value="queda_flor" onchange="autoAnalyze()"><span>🌸 Queda de flores / baixa frutificação</span></label>
+            <label class="symp-row"><input type="checkbox" class="diag-cb" value="folhas_doentes" onchange="autoAnalyze()"><span>🍂 Folhas jovens com sintomas / lançamento foliar</span></label>
+            <label class="symp-row"><input type="checkbox" class="diag-cb" value="alta_umidade" onchange="autoAnalyze()"><span>💧 Período de alta umidade / chuvas frequentes</span></label>
+          </div>
+        </div>
+
+        <div class="card" style="padding:16px">
+          <h4 style="font-weight:700;font-size:13px;margin-bottom:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em">🌱 Clone Plantado</h4>
+          <select id="clone-select" onchange="autoAnalyze()" style="width:100%;padding:10px 14px;border-radius:10px;border:1.5px solid var(--border);font-size:13px;font-family:inherit;background:#fff;outline:none">
+            <option value="">Selecionar clone (opcional)</option>
+            <option value="CCP 06">CCP 06</option>
+            <option value="CCP 09">CCP 09</option>
+            <option value="CCP 76">CCP 76</option>
+            <option value="CCP 1001">CCP 1001</option>
+            <option value="EMBRAPA 50">EMBRAPA 50 (CAP 26)</option>
+            <option value="EMBRAPA 51">EMBRAPA 51 (CAP 6)</option>
+            <option value="BRS 189">BRS 189 (END 157)</option>
+            <option value="BRS 226">BRS 226 (CAP 42)</option>
+            <option value="BRS 253">BRS 253 (CAP 12)</option>
+            <option value="BRS 265">BRS 265</option>
+            <option value="BRS 274">BRS 274 — Jacaju</option>
+            <option value="BRS 275">BRS 275 — Dão</option>
+            <option value="FAGA 1">FAGA 1</option>
+            <option value="FAGA 11">FAGA 11</option>
+          </select>
+        </div>
+
+        <button class="btn" style="width:100%;justify-content:center;font-size:15px;padding:14px" onclick="runDiagnosis()">
+          🔬 Gerar Diagnóstico Completo
+        </button>
+      </div>
+
+      <div>
+        <div id="diag-result-box" class="card" style="min-height:520px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:14px;color:var(--muted)">
+          <div style="font-size:56px;opacity:.2">🩺</div>
+          <p style="font-size:15px;font-weight:600">Aguardando análise</p>
+          <p style="font-size:13px;text-align:center;max-width:300px;line-height:1.6">Selecione sintomas ao lado ou descreva o problema no chat para receber o diagnóstico da IA.</p>
+          <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:8px">
+            <div style="text-align:center;padding:12px 16px;background:rgba(61,107,47,.06);border-radius:12px;border:1px solid rgba(61,107,47,.1)">
+              <div style="font-size:20px">🦠</div><div style="font-size:11px;margin-top:4px;color:var(--muted)">4 doenças<br>no banco</div>
+            </div>
+            <div style="text-align:center;padding:12px 16px;background:rgba(61,107,47,.06);border-radius:12px;border:1px solid rgba(61,107,47,.1)">
+              <div style="font-size:20px">🌱</div><div style="font-size:11px;margin-top:4px;color:var(--muted)">14 clones<br>mapeados</div>
+            </div>
+            <div style="text-align:center;padding:12px 16px;background:rgba(61,107,47,.06);border-radius:12px;border:1px solid rgba(61,107,47,.1)">
+              <div style="font-size:20px">📚</div><div style="font-size:11px;margin-top:4px;color:var(--muted)">Fonte:<br>Embrapa</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ MARKETPLACE ═══ -->
+  <section id="page-marketplace" class="page">
+    <div class="page-hd"><div><h2>Marketplace & Preços</h2><p>Comercialize sua produção e acompanhe a cotação atualizada da castanha.</p></div>
+      <button class="btn" onclick="alert('Funcionalidade completa disponível no app.')">+ Novo Anúncio</button>
+    </div>
+
+    <div class="location-bar">
+      <div class="loc-info">
+        <div class="loc-icon">📍</div>
+        <div><strong style="font-size:14px">Localização do Vendedor</strong><br><span id="loc-text" style="font-size:12px;color:var(--muted)">Use o GPS para compartilhar sua localização nos anúncios.</span></div>
+      </div>
+      <div class="loc-actions">
+        <button id="view-loc-btn" class="btn btn-outline" style="display:none;font-size:13px;padding:8px 14px" onclick="showMyMap()">🗺️ Ver no mapa</button>
+        <button class="btn" style="font-size:13px;padding:8px 16px" onclick="getLocation()">📡 Usar minha localização</button>
+      </div>
+    </div>
+
+    <div class="grid-3" style="margin-bottom:20px">
+      <div class="card" style="display:flex;justify-content:space-between;align-items:center">
+        <div><p style="font-size:12px;color:var(--muted)">Castanha In Natura</p><h3 style="font-size:22px;font-weight:800">R$ 8,50<span style="font-size:13px;font-weight:400">/kg</span></h3></div>
+        <div style="color:var(--green);font-weight:700;text-align:right"><div style="font-size:20px">↑</div><div style="font-size:12px">+3.5%</div></div>
+      </div>
+      <div class="card" style="display:flex;justify-content:space-between;align-items:center">
+        <div><p style="font-size:12px;color:var(--muted)">Pedúnculo (Cajuína)</p><h3 style="font-size:22px;font-weight:800">R$ 4,20<span style="font-size:13px;font-weight:400">/kg</span></h3></div>
+        <div style="color:var(--muted);font-weight:700;text-align:right"><div style="font-size:20px">→</div><div style="font-size:12px">Estável</div></div>
+      </div>
+      <div class="card" style="display:flex;justify-content:space-between;align-items:center">
+        <div><p style="font-size:12px;color:var(--muted)">Amêndoa Processada</p><h3 style="font-size:22px;font-weight:800">R$ 42,00<span style="font-size:13px;font-weight:400">/kg</span></h3></div>
+        <div style="color:var(--green);font-weight:700;text-align:right"><div style="font-size:20px">↑</div><div style="font-size:12px">+2.1%</div></div>
+      </div>
+    </div>
+
+    <div id="listings-container">
+      <div class="listing-card">
+        <div class="listing-icon" style="background:#dcfce7">🛍️</div>
+        <div class="listing-body">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start">
+            <span class="badge badge-green">VENDA</span><strong>R$ 8,50/kg</strong>
+          </div>
+          <h3 style="font-weight:800;font-size:17px;margin:6px 0">Castanha de Caju In Natura</h3>
+          <p style="font-size:13px;color:var(--muted)">Castanha recém colhida, safra 2026. Qualidade superior, baixa umidade.</p>
+          <div class="listing-meta">
+            <span>📦 5.000 kg disponíveis</span>
+            <span>📍 Piripiri, PI</span>
+            <span>📞 (85) 99876-5432</span>
+          </div>
+          <button class="map-btn" onclick="showListingMap('Piripiri, PI')">🗺️ Ver localização no mapa</button>
+        </div>
+      </div>
+      <div class="listing-card">
+        <div class="listing-icon" style="background:#dbeafe">🛒</div>
+        <div class="listing-body">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start">
+            <span class="badge badge-blue">COMPRA</span><strong>R$ 7,80/kg</strong>
+          </div>
+          <h3 style="font-weight:800;font-size:17px;margin:6px 0">Castanha In Natura – Demanda Indústria</h3>
+          <p style="font-size:13px;color:var(--muted)">Indústria compradora busca fornecedores de castanha. Pagamento em 30 dias.</p>
+          <div class="listing-meta">
+            <span>📦 20.000 kg/mês</span>
+            <span>📍 Fortaleza, CE</span>
+            <span>📞 (85) 33221-4567</span>
+          </div>
+          <button class="map-btn" onclick="showListingMap('Fortaleza, CE')">🗺️ Ver localização no mapa</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ FINANCEIRO ═══ -->
+  <section id="page-financeiro" class="page">
+    <div class="page-hd"><div><h2>Controle Financeiro</h2><p>Acompanhe os custos, receitas e a rentabilidade da sua fazenda.</p></div></div>
+    <div class="grid-4" style="margin-bottom:24px">
+      <div class="card stat-card" style="background:#f0fdf4;border-color:#bbf7d0">
+        <div class="sc-top"><span class="sc-label">Receita Total</span><div class="sc-icon" style="background:#dcfce7">📈</div></div>
+        <div class="sc-value" style="color:var(--green)">R$ 285.000</div>
+      </div>
+      <div class="card stat-card" style="background:#fff1f2;border-color:#fecdd3">
+        <div class="sc-top"><span class="sc-label">Custos Totais</span><div class="sc-icon" style="background:#fee2e2">📉</div></div>
+        <div class="sc-value" style="color:var(--red)">R$ 142.500</div>
+      </div>
+      <div class="card stat-card" style="background:rgba(61,107,47,.05);border-color:rgba(61,107,47,.2)">
+        <div class="sc-top"><span class="sc-label">Lucro Líquido</span><div class="sc-icon" style="background:rgba(61,107,47,.1)">💰</div></div>
+        <div class="sc-value" style="color:var(--primary)">R$ 142.500</div>
+        <div class="sc-sub">Margem 50%</div>
+      </div>
+      <div class="card stat-card" style="background:#fffbeb;border-color:#fde68a">
+        <div class="sc-top"><span class="sc-label">Receita / Hectare</span><div class="sc-icon" style="background:#fef3c7">🎯</div></div>
+        <div class="sc-value" style="color:var(--amber)">R$ 10.364</div>
+        <div class="sc-sub">Custo/ha: R$ 5.182</div>
+      </div>
+    </div>
+    <div class="grid-2">
+      <div class="chart-box" style="grid-column:span 2">
+        <div class="chart-title">📊 Receitas vs Custos (Mensal)</div>
+        <canvas id="chartFinancial"></canvas>
+      </div>
+    </div>
+    <div class="grid-2">
+      <div class="chart-box"><div class="chart-title">📈 Lucro Mensal</div><canvas id="chartProfit"></canvas></div>
+      <div class="chart-box"><div class="chart-title">🥧 Custos por Categoria</div><canvas id="chartExpense"></canvas></div>
+    </div>
+    <div class="card">
+      <h4 style="font-weight:700;margin-bottom:14px">📋 Últimos Lançamentos</h4>
+      <table>
+        <thead><tr><th>Descrição</th><th>Categoria</th><th>Data</th><th>Valor</th></tr></thead>
+        <tbody>
+          <tr><td>🟢 Venda Lote – Castanha In Natura</td><td>Venda de Castanha</td><td>15/06/2025</td><td style="color:var(--green);font-weight:700">+ R$ 42.500</td></tr>
+          <tr><td>🔴 Compra de Fertilizantes</td><td>Insumos/Fertilizantes</td><td>10/06/2025</td><td style="color:var(--red);font-weight:700">− R$ 8.200</td></tr>
+          <tr><td>🔴 Mão de Obra – Colheita</td><td>Mão de Obra</td><td>05/06/2025</td><td style="color:var(--red);font-weight:700">− R$ 12.000</td></tr>
+          <tr><td>🟢 Venda Pedúnculo – Cajuína</td><td>Venda de Pedúnculo</td><td>01/06/2025</td><td style="color:var(--green);font-weight:700">+ R$ 18.900</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ═══ RASTREABILIDADE ═══ -->
+  <section id="page-rastreabilidade" class="page">
+    <div class="page-hd"><div><h2>Rastreabilidade</h2><p>Acompanhe seus lotes desde a colheita até a venda com código QR.</p></div></div>
+    <div class="card">
+      <table>
+        <thead><tr><th>Código do Lote</th><th>Plantação</th><th>Variedade</th><th>Colheita</th><th>Quantidade</th><th>Status</th><th>Destino</th></tr></thead>
+        <tbody>
+          <tr><td><code style="background:var(--bg);padding:2px 8px;border-radius:6px">LOT-202501-4521</code></td><td>Fazenda São João</td><td>CCP 76</td><td>15/01/2025</td><td>5.000 kg</td><td><span class="badge badge-green">Vendido</span></td><td>Indústria Fortaleza</td></tr>
+          <tr><td><code style="background:var(--bg);padding:2px 8px;border-radius:6px">LOT-202503-7832</code></td><td>Sítio Boa Vista</td><td>BRS 189</td><td>10/03/2025</td><td>3.200 kg</td><td><span class="badge badge-blue">Armazenado</span></td><td>Cooperativa Cajuína</td></tr>
+          <tr><td><code style="background:var(--bg);padding:2px 8px;border-radius:6px">LOT-202505-1194</code></td><td>Fazenda São João</td><td>CCP 09</td><td>22/05/2025</td><td>7.800 kg</td><td><span class="badge badge-amber">Processando</span></td><td>—</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ═══ ESTOQUE ═══ -->
+  <section id="page-estoque" class="page">
+    <div class="page-hd"><div><h2>Estoque</h2><p>Controle os insumos, equipamentos e produtos armazenados na fazenda.</p></div></div>
+    <div class="card">
+      <table>
+        <thead><tr><th>Produto</th><th>Quantidade</th><th>Localização</th><th>Entrada</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td>🌿 Ureia (Fertilizante)</td><td>500 kg</td><td>Armazém A</td><td>10/05/2025</td><td><span class="badge badge-green">Bom</span></td></tr>
+          <tr><td>💧 Herbicida Glifosato</td><td>80 L</td><td>Depósito B</td><td>01/04/2025</td><td><span class="badge badge-amber">Médio</span></td></tr>
+          <tr><td>🌱 Mudas Enxertadas CCP 76</td><td>200 un</td><td>Viveiro</td><td>20/05/2025</td><td><span class="badge badge-green">Bom</span></td></tr>
+          <tr><td>🪣 Calcário Dolomítico</td><td>1.200 kg</td><td>Armazém A</td><td>15/03/2025</td><td><span class="badge badge-green">Bom</span></td></tr>
+          <tr><td>⚙️ Óleo para Motobomba</td><td>12 L</td><td>Galpão</td><td>08/06/2025</td><td><span class="badge badge-red">Baixo</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ═══ ALERTAS ═══ -->
+  <section id="page-alertas" class="page">
+    <div class="page-hd"><div><h2>Alertas</h2><p>Notificações importantes sobre sua fazenda e mercado.</p></div></div>
+    <div class="alert-card high">
+      <div class="alert-ic" style="background:#fee2e2">🦟</div>
+      <div class="alert-body"><h4>Risco Alto de Antracnose</h4><p>Condições climáticas favoráveis à antracnose detectadas na Fazenda São João – Talhão 1. Aplicar fungicida preventivo.</p><small>🕐 Há 2 horas · Alta Prioridade</small></div>
+    </div>
+    <div class="alert-card med">
+      <div class="alert-ic" style="background:#fef3c7">💧</div>
+      <div class="alert-body"><h4>Umidade Baixa – Irrigação Necessária</h4><p>Talhão 2 com umidade do solo abaixo de 40%. Recomenda-se irrigação nas próximas 24h.</p><small>🕐 Há 5 horas · Média Prioridade</small></div>
+    </div>
+    <div class="alert-card low">
+      <div class="alert-ic" style="background:#dbeafe">🌾</div>
+      <div class="alert-body"><h4>Colheita Prevista para Próxima Semana</h4><p>Lote LOT-202505-1194 do Sítio Boa Vista está próximo ao ponto ideal de colheita.</p><small>🕐 Há 1 dia · Baixa Prioridade</small></div>
+    </div>
+    <div class="alert-card low">
+      <div class="alert-ic" style="background:#dbeafe">📈</div>
+      <div class="alert-body"><h4>Alta no Preço da Castanha</h4><p>Preço da castanha in natura subiu 3,5% esta semana. Bom momento para negociação com compradores.</p><small>🕐 Há 2 dias · Informativo</small></div>
+    </div>
+    <div class="alert-card med">
+      <div class="alert-ic" style="background:#fef3c7">☁️</div>
+      <div class="alert-body"><h4>Previsão de Chuva Fraca</h4><p>Chuvas leves previstas para os próximos 3 dias no litoral do Ceará. Avaliar necessidade de proteção de lotes armazenados.</p><small>🕐 Há 3 dias · Média Prioridade</small></div>
+    </div>
+  </section>
+
+  <!-- ═══ MENSAGENS ═══ -->
+  <section id="page-mensagens" class="page" style="padding:0;height:calc(100vh - 60px);display:none">
+    <div style="display:flex;height:100%;overflow:hidden">
+      <div id="msg-contacts" style="width:300px;flex-shrink:0;border-right:1px solid var(--border);display:flex;flex-direction:column;background:#fff">
+        <div style="padding:16px 16px 12px;border-bottom:1px solid var(--border)">
+          <h3 style="font-size:16px;font-weight:800;color:var(--text);margin-bottom:10px">💬 Mensagens</h3>
+          <input id="msg-search" type="text" placeholder="Buscar agricultor..." oninput="filterContacts()" style="width:100%;padding:9px 12px;border:1.5px solid var(--border);border-radius:10px;font-size:13px;outline:none;background:var(--bg)"/>
+        </div>
+        <div id="contacts-list" style="flex:1;overflow-y:auto;padding:8px"></div>
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;background:var(--bg)">
+        <div id="chat-placeholder" style="flex:1;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;color:var(--muted)">
+          <div style="font-size:48px">💬</div>
+          <p style="font-size:15px;font-weight:600">Selecione um agricultor para conversar</p>
+          <p style="font-size:13px">Negocie preços, tire dúvidas e troque experiências</p>
+        </div>
+        <div id="chat-area" style="display:none;flex-direction:column;height:100%">
+          <div id="chat-header" style="padding:14px 20px;background:#fff;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px">
+            <div id="chat-avatar" style="width:38px;height:38px;border-radius:50%;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px"></div>
+            <div><div id="chat-name" style="font-weight:700;font-size:15px"></div><div id="chat-role" style="font-size:12px;color:var(--muted)"></div></div>
+          </div>
+          <div id="chat-messages" style="flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:8px"></div>
+          <div style="padding:12px 16px;background:#fff;border-top:1px solid var(--border);display:flex;gap:8px;align-items:flex-end">
+            <textarea id="msg-input" placeholder="Digite sua mensagem..." rows="1" onkeydown="msgKeydown(event)" style="flex:1;padding:11px 14px;border:1.5px solid var(--border);border-radius:14px;font-size:14px;resize:none;outline:none;font-family:inherit;max-height:100px;overflow-y:auto;transition:.2s"></textarea>
+            <button onclick="sendMsg()" style="padding:11px 18px;background:var(--primary);color:#fff;border:none;border-radius:14px;font-weight:700;cursor:pointer;white-space:nowrap;transition:.2s">Enviar ✈️</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ ACADEMIA ═══ -->
+  <section id="page-academia" class="page">
+    <div class="page-hd"><div><h2>Academia do Caju</h2><p>Aprenda as melhores práticas de cultivo, manejo e negócios do caju.</p></div></div>
+    <div id="tab-videos" class="tab-pane active">
+      <div class="pills" id="vid-pills">
+        <button class="pill active" onclick="filterVideos(this,'Todos')">Todos</button>
+        <button class="pill" onclick="filterVideos(this,'Plantio')">🌱 Plantio</button>
+        <button class="pill" onclick="filterVideos(this,'Pragas')">🐛 Pragas</button>
+        <button class="pill" onclick="filterVideos(this,'Colheita')">🌾 Colheita</button>
+        <button class="pill" onclick="filterVideos(this,'Processamento')">🏭 Processamento</button>
+        <button class="pill" onclick="filterVideos(this,'Irrigação')">💧 Irrigação</button>
+        <button class="pill" onclick="filterVideos(this,'Negócios')">💰 Negócios</button>
+      </div>
+      <div class="video-grid" id="video-grid"></div>
+    </div>
+  </section>
+
+  <!-- ═══ INFORMAÇÃO ═══ -->
+  <section id="page-informacao" class="page">
+    <div class="page-hd"><div><h2>Informação</h2><p>Conheça a importância do cajueiro e como o CajuTec apoia os agricultores do Nordeste.</p></div></div>
+    <div class="info-hero">
+      <div style="font-size:12px;font-weight:600;opacity:.7;text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px">📖 Sobre o CajuTec</div>
+      <h2>Tecnologia a serviço da cajuicultura brasileira</h2>
+      <p style="opacity:.85;margin-top:8px;max-width:560px;line-height:1.6">O CajuTec nasceu para democratizar o conhecimento técnico e apoiar agricultores familiares do Nordeste a produzirem mais, com menos perdas e maior rentabilidade.</p>
+    </div>
+    <div class="info-stats">
+      <div class="info-stat"><strong>1º</strong><span>Brasil no ranking mundial de exportação de castanha</span></div>
+      <div class="info-stat"><strong>350 mil</strong><span>famílias que dependem do caju no Nordeste</span></div>
+      <div class="info-stat"><strong>40%</strong><span>aumento de produtividade com manejo adequado</span></div>
+      <div class="info-stat"><strong>R$ 2 bi</strong><span>em receitas geradas pelo setor cajuicultor</span></div>
+    </div>
+    <div class="info-section"><div class="info-icon" style="background:#dcfce7">🌿</div><div><h4 style="font-weight:700;margin-bottom:6px">Importância do Cajueiro</h4><p style="font-size:13px;color:var(--muted);line-height:1.6">O cultivo do cajueiro é muito importante para a agricultura familiar no Brasil, principalmente no Nordeste. O cajueiro, conhecido cientificamente como Anacardium occidentale, tem grande valor econômico, pois produz a castanha e também pode ser usado para fazer sucos, doces e geleias, aumentando a renda dos agricultores.</p></div></div>
+    <div class="info-section"><div class="info-icon" style="background:#fef3c7">☀️</div><div><h4 style="font-weight:700;margin-bottom:6px">Adaptação e Cuidados Essenciais</h4><p style="font-size:13px;color:var(--muted);line-height:1.6">Segundo a Embrapa, o cajueiro se adapta bem ao clima quente e seco, mas para produzir bem é necessário cuidar do solo, da irrigação e da adubação. Com o manejo correto, a produtividade pode aumentar significativamente, garantindo melhores resultados para o agricultor.</p></div></div>
+    <div class="info-section"><div class="info-icon" style="background:#fee2e2">🐛</div><div><h4 style="font-weight:700;margin-bottom:6px">Desafios: Pragas e Identificação</h4><p style="font-size:13px;color:var(--muted);line-height:1.6">Muitos agricultores enfrentam dificuldades, principalmente pela falta de conhecimento técnico. Um dos maiores problemas é a identificação de pragas como mosca-branca, pulgões, brocas e lagartas, que causam danos parecidos, dificultando o controle correto. Quando o agricultor não identifica corretamente a praga, pode usar produtos errados, gastar mais dinheiro e prejudicar o meio ambiente.</p></div></div>
+    <div class="info-section"><div class="info-icon" style="background:#dbeafe">📱</div><div><h4 style="font-weight:700;margin-bottom:6px">O Aplicativo CajuTec</h4><p style="font-size:13px;color:var(--muted);line-height:1.6">Para ajudar nisso, foi pensado o aplicativo CajuTec. Esse aplicativo auxilia os agricultores de forma simples e prática, oferecendo vídeos explicativos, imagens para identificar pragas e orientações passo a passo sobre como cuidar do cajueiro. Além disso, o app ensina como aproveitar melhor o caju, mostrando como produzir sucos, doces e outros produtos, ajudando o agricultor a aumentar sua renda.</p></div></div>
+    <div class="info-section"><div class="info-icon" style="background:#f3e8ff">💡</div><div><h4 style="font-weight:700;margin-bottom:6px">Conclusão</h4><p style="font-size:13px;color:var(--muted);line-height:1.6">Concluímos que o cajueiro é muito importante, mas precisa de mais apoio técnico. Com o uso do aplicativo CajuTec, os agricultores podem aprender mais, produzir melhor e ter mais lucro de forma sustentável.</p></div></div>
+    <div style="background:#fffbeb;border:1px solid #fde68a;border-radius:14px;padding:16px;display:flex;gap:12px;align-items:flex-start;margin-top:4px">
+      <span style="font-size:18px">🌿</span>
+      <p style="font-size:13px;color:#92400e;line-height:1.5"><strong>Fonte:</strong> Embrapa Agroindústria Tropical — referência nacional em pesquisa e tecnologia para o desenvolvimento da cajuicultura brasileira.</p>
+    </div>
+  </section>
+
+  </div><!-- /content -->
+</div><!-- /main -->
+
+<!-- ═══ MAP MODAL ═══ -->
+<div id="map-modal" class="modal-bg" onclick="closeMapModal()">
+  <div class="modal" style="padding:0;overflow:hidden" onclick="event.stopPropagation()">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--border)">
+      <div style="display:flex;align-items:center;gap:10px">
+        <div style="width:36px;height:36px;background:rgba(61,107,47,.1);border-radius:10px;display:flex;align-items:center;justify-content:center">📍</div>
+        <div><strong id="map-label" style="font-size:14px"></strong><br><small id="map-coords" style="color:var(--muted)"></small></div>
+      </div>
+      <div style="display:flex;gap:8px">
+        <a id="gmaps-link" href="#" target="_blank" class="btn btn-outline" style="font-size:12px;padding:6px 12px">🗺️ Google Maps</a>
+        <button onclick="closeMapModal()" style="background:none;border:1px solid var(--border);border-radius:10px;width:32px;height:32px;cursor:pointer;font-size:16px">✕</button>
+      </div>
+    </div>
+    <iframe id="map-modal-frame" src="" title="Mapa"></iframe>
+    <div style="padding:10px 20px;background:var(--bg);border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center">
+      <span style="font-size:12px;color:var(--muted)">Mapa via <strong>OpenStreetMap</strong></span>
+      <a id="directions-link" href="#" target="_blank" style="font-size:12px;font-weight:700;color:var(--primary)">🧭 Como chegar</a>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ VIDEO MODAL ═══ -->
+<div id="vid-modal" class="modal-bg" onclick="closeVidModal()">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div style="position:relative">
+      <div style="aspect-ratio:16/9;background:#000">
+        <iframe id="vid-modal-frame" src="" allow="autoplay;encrypted-media" allowfullscreen style="width:100%;height:100%;border:none"></iframe>
+      </div>
+      <button onclick="closeVidModal()" style="position:absolute;top:10px;right:10px;background:rgba(0,0,0,.6);border:none;border-radius:50%;width:32px;height:32px;color:#fff;cursor:pointer;font-size:16px">✕</button>
+    </div>
+    <div style="padding:20px">
+      <h3 id="vid-modal-title" style="font-size:18px;font-weight:800;margin-bottom:8px"></h3>
+      <a id="vid-modal-yt" href="#" target="_blank" style="display:inline-flex;align-items:center;gap:6px;font-size:12px;color:#ff0000;font-weight:700;text-decoration:none;margin-bottom:12px">🔴 Ver no YouTube ↗</a>
+      <p id="vid-modal-desc" style="font-size:14px;color:var(--muted);line-height:1.6"></p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ CLONE TABLE MODAL ═══ -->
+<div id="clone-modal" class="modal-bg" onclick="closeCloneModal()">
+  <div class="modal" style="width:min(760px,95vw)" onclick="event.stopPropagation()">
+    <div style="padding:24px 24px 0">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+        <div>
+          <h3 style="font-size:18px;font-weight:800">🌱 Reação dos Clones às Doenças</h3>
+          <p style="font-size:12px;color:var(--muted);margin-top:4px">Fonte: Embrapa Agroindústria Tropical — Cultivarweb [2019]</p>
+        </div>
+        <button onclick="closeCloneModal()" style="background:none;border:1px solid var(--border);border-radius:10px;width:32px;height:32px;cursor:pointer;font-size:16px">✕</button>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px">
+        <span class="clone-tag R">R = Resistente</span>
+        <span class="clone-tag S">S = Susceptível</span>
+        <span class="clone-tag MR">MR = Mod. Resistente</span>
+        <span class="clone-tag I">I = Intermediário</span>
+      </div>
+    </div>
+    <div style="overflow-x:auto;padding:0 24px 24px">
+      <table style="min-width:500px">
+        <thead>
+          <tr>
+            <th>Clone</th>
+            <th>🟤 Antracnose</th>
+            <th>⚫ Mofo-preto</th>
+            <th>🟡 Resinose</th>
+            <th>⚪ Oídio</th>
+          </tr>
+        </thead>
+        <tbody id="clone-table-body"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
